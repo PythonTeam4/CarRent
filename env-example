@@ -1,0 +1,2 @@
+SECRET_KEY='django-insecure-c2k2w&t@d+6&2!)_9pnc396@wj3fns_08lz0q50o7&llp4ful4'
+DEBUG=True
