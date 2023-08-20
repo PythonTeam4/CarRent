@@ -1,6 +1,5 @@
 from django.core.exceptions import ValidationError
 from django.db.models import Q
-from django.utils.translation import gettext_lazy as _
 from django.db import models
 from imagekit.models import ImageSpecField
 from pilkit.processors import ResizeToFill
@@ -14,8 +13,6 @@ class BaseModel(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        """Meta class."""
-
         abstract = True
 
 
@@ -53,9 +50,9 @@ class Car(BaseModel):
     avatar = models.ImageField(upload_to='media/avatars/', blank=True, null=True)
     avatar_thumbnail = ImageSpecField(
         source='avatar',
-        processors=[ResizeToFill(100, 100)],  # Rozmiar miniatury awatara
-        format='JPEG',  # Format miniatury awatara
-        options={'quality': 80}  # Jakość miniatury awatara
+        processors=[ResizeToFill(100, 100)],
+        format='JPEG',
+        options={'quality': 80}
     )
     brand = models.CharField(max_length=32)
     model = models.CharField(max_length=32)
@@ -72,23 +69,21 @@ class Car(BaseModel):
     drive = models.CharField(max_length=32, choices=type_drives)
 
     def __str__(self):
-        """Return name of car."""
-        return self.brand + " " + self.model + " " + str(self.year)
+        return f"{self.brand} {self.model} {self.year}"
 
 
 class UserProfile(BaseModel):
     avatar = models.ImageField(upload_to='media/avatars/', blank=True, null=True)
     avatar_thumbnail = ImageSpecField(
         source='avatar',
-        processors=[ResizeToFill(100, 100)],  # Rozmiar miniatury awatara
-        format='JPEG',  # Format miniatury awatara
-        options={'quality': 80}  # Jakość miniatury awatara
-    )
+        processors=[ResizeToFill(100, 100)],
+        format='JPEG',
+        options={'quality': 80})
     phone = models.CharField(max_length=32)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.user.username
+        return f"{self.user.username}"
 
 
 class CompanyBranches(BaseModel):
@@ -103,7 +98,7 @@ class RentalTerms(BaseModel):
     price = models.DecimalField(max_digits=16, decimal_places=2)
 
     def __str__(self):
-        return self.car.brand + ' ' + self.car.model + " " + str(self.price)
+        return f"{self.car.brand} {self.car.model}  {self.price}"
 
 
 class Rent(BaseModel):
@@ -117,23 +112,23 @@ class Rent(BaseModel):
 
     def clean(self):
         if not self.is_car_available():
-            raise ValidationError(
-                _("This car is not available for the selected dates."),
-                params={'value': self},
-            )
+            raise (ValidationError
+                   ("This car is not available for the selected date"))
 
     def is_car_available(self):
-        conflicting_rents = Rent.objects.filter(
-            Q(rental_terms=self.rental_terms),
-            Q(start_date__range=(self.start_date, self.end_date)) |
-            Q(end_date__range=(self.start_date, self.end_date)) |
-            Q(start_date__lte=self.start_date, end_date__gte=self.end_date)
-        )
+        if self.id is None:
+            conflicting_rents = Rent.objects.filter(
+                Q(rental_terms__car=self.rental_terms.car),
+                Q(start_date__range=(self.start_date, self.end_date)) |
+                Q(end_date__range=(self.start_date, self.end_date)) |
+                Q(start_date__lte=self.start_date, end_date__gte=self.end_date)
+            )
 
-        return not conflicting_rents.exists()
+            return not conflicting_rents.exists()
+        else:
+            return True
 
     def save(self, *args, **kwargs):
-        # Obliczanie wartości pola 'amount' na podstawie ceny samochodu i okresu wynajmu
         if self.rental_terms and self.period:
             self.amount = self.rental_terms.price * self.period
 
