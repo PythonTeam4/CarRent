@@ -17,6 +17,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from RentCar.views import FileDownloadView
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('images/<path:path>', FileDownloadView.as_view(), name='images'),
 ]
