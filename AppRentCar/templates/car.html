@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="car-details">
+        <h1>{{ car.brand }} {{ car.model }}</h1>
+        {% if car.avatar_thumbnail %}
+            <span class="avatar">
+                <img src="{% url 'images' car.avatar %}"  height="500" width="500">
+            </span>
+        {% else %}
+            <p>Brak zdjęcia</p>
+        {% endif %}
+        <p>Typ: {{ car.cars_type }}</p>
+        <p>Typ silnika: {{ car.engine }}</p>
+        <p>Pojemność: {{ car.capacity }}</p>
+        <p>Rok: {{ car.year }}</p>
+        <p>Liczba miejsc siedzących: {{ car.number_of_seats }}</p>
+        <p>Spalanie: {{ car.consumption }}</p>
+        <p>Moc: {{ car.power }}</p>
+        <p>Przebieg: {{ car.car_mileage }}</p>
+        <p>Skrzynia biegów: {{ car.transmission }}</p>
+        <p>Liczba biegów: {{ car.no_gears }}</p>
+        <p>Napęd: {{ car.drive }}</p>
+    </div>
+{% endblock %}
