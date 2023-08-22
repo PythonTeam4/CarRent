@@ -1,13 +1,20 @@
 {% extends "base.html" %}
-
 {% block content %}
     <h1>Flota pojazdów</h1>
+    <a href="{% url 'cars_create' %}">
+        <button type="button">Dodaj Pojazd</button>
+    </a>
     {% for car in object_list %}
-        <p><a href="{% url 'cars_detail' car.id %}"><b>{{ car.brand }} {{ car.model }}</b></a></p>
+        <p><a href="{% url 'car_detail' car.id %}">
+            <b>{{ car.brand }} {{ car.model }}</b></a></p>
         {% if car.avatar_thumbnail %}
-            <span class="avatar"><img src="{% url 'images' car.avatar %}"  height="150" width="250"></span>
+            <span class="avatar">
+                <img src="{% url 'images' car.avatar %}"
+                     height="150" width="250">
+            </span>
         {% else %}
             <p>Brak zdjęcia</p>
         {% endif %}
     {% endfor %}
+
 {% endblock %}`
