@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.utils import timezone
 from .models import Rent, RentalTerms, Car, CompanyBranches
@@ -7,6 +7,7 @@ from .models import Rent, RentalTerms, Car, CompanyBranches
 class RentAvailabilityTest(TestCase):
 
     def setUp(self):
+        User = get_user_model()
         self.user = User.objects.create_user(username='testuser', password='testpassword')
         self.car = Car.objects.create(
             brand='Brand',
@@ -40,7 +41,6 @@ class RentAvailabilityTest(TestCase):
             end_date=self.end_date,
             take_from=company_branch,
             take_back=company_branch,
-
         )
         rent = Rent(
             rental_terms=self.rental_terms,
@@ -49,6 +49,5 @@ class RentAvailabilityTest(TestCase):
             end_date=self.end_date,
             take_from=company_branch,
             take_back=company_branch,
-
         )
         self.assertFalse(rent.is_car_available())
