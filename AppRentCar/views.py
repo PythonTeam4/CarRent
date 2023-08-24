@@ -77,5 +77,5 @@ class RentalUpdateView(UpdateView):
 
 class RentalDeleteView(DeleteView):
     template_name = 'confirm_delete_reservation.html'
-    model = Car
+    model = Rent
     success_url = '/rent/rentals/'
