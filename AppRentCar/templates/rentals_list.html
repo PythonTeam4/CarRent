@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+    <h2>Lista rezerwacji</h2>
+    <a href="{% url 'rental_create' %}">
+        <button type="button">Utwórz</button>
+    </a>
+    {% for rent in object_list %}
+        <p><a href="{% url 'rental_detail' rent.id %}">
+            {{ rent }}</a></p>
+    {% endfor %}
+
+{% endblock %}`

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <a href={% url 'rental_update' rent.id %}>
+        <button type="button">Edytuj</button>
+    </a>
+    <a href={% url 'rental_delete' rent.id %}>
+        <button type="button">Usuń</button>
+    </a>
+    <div class="rent-details">
+        <h2 >{{ rent.rental_terms.car }}</h2>
+        <p>Od: {{ rent.start_date }} | Do: {{ rent.end_date }}</p>
+        <p>Odbiór: {{ rent.take_from }} | Zwrot: {{ rent.take_back }} </p>
+        <p>Klient: {{ rent.client }}</p>
+        <p>Stawka: {{ rent.amount }}</p>
+    </div>
+{% endblock %}

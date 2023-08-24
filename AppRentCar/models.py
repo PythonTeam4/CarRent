@@ -135,7 +135,7 @@ class Rent(BaseModel):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"Rent of {self.rental_terms} by {self.client}"
+        return f"{self.rental_terms.car}, Od: {self.start_date.date()}, Do: {self.end_date.date()}, ({self.client})"
 
     @property
     def period(self):
