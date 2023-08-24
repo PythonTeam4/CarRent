@@ -7,6 +7,9 @@
     <a href={% url 'rental_delete' rent.id %}>
         <button type="button">Usuń</button>
     </a>
+    <a href={% url 'rentals' %}>
+        <button type="button">Lista</button>
+    </a>
     <div class="rent-details">
         <h2 >{{ rent.rental_terms.car }}</h2>
         <p>Od: {{ rent.start_date }} | Do: {{ rent.end_date }}</p>
