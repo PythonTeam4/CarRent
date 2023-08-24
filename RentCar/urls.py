@@ -23,5 +23,4 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include("AppRentCar.urls")),
     path('images/<path:path>', FileDownloadView.as_view(), name='images'),
-    path('rent', include("AppRentCar.urls")),
 ]

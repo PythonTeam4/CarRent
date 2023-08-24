@@ -68,7 +68,8 @@ class RentalCreateView(FormView):
 class RentalUpdateView(UpdateView):
     template_name = 'form.html'
     model = Rent
-    fields = '__all__'
+    fields = ['rental_terms', 'client', 'start_date', 'end_date', 'take_from',
+              'take_back', 'amount']
 
     def get_success_url(self):
         rent_id = self.kwargs['pk']
