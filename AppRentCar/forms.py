@@ -63,3 +63,19 @@ class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = ['avatar', 'phone']
+
+
+class DeleteCarForm(forms.Form):
+    car_id = forms.ModelChoiceField(
+        queryset=Car.objects.all(),
+        label='Wybierz pojazd do usunięcia',
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )
+
+
+class EditCarForm(forms.Form):
+    car_id = forms.ModelChoiceField(
+        queryset=Car.objects.all(),
+        label='Select Car to Edit',
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )

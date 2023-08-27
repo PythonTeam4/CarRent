@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% for rent in rents %}
+     <li>{{ rent.client }}: {{ rent.rental_terms.car }} - Od {{ rent.start_date }} Do {{ rent.end_date }}</li>
+{% endfor %}
+
+{% endblock %}
+

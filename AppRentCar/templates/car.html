@@ -1,12 +1,6 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <a href={% url 'cars_update' car.id %}>
-        <button type="button">Edytuj</button>
-    </a>
-    <a href={% url 'cars_delete' car.id %}>
-        <button type="button">Usuń</button>
-    </a>
     <a href={% url 'create_rent' car.id %}>
         <button type="button">Rezerwuj</button>
     </a>
