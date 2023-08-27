@@ -1,13 +1,13 @@
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.db.models import Q
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, FormView, UpdateView, \
     DeleteView, CreateView, TemplateView
 
-from .forms import CarForm, RentForm, AvailabilityForm, UserProfileForm
+from .forms import CarForm, RentForm, AvailabilityForm, UserProfileForm, DeleteCarForm, EditCarForm
 from .models import Car, Rent, RentalTerms, UserProfile
 from datetime import datetime
 
@@ -43,20 +43,20 @@ class CarUpdateView(UpdateView):
 
     def get_success_url(self):
         car_id = self.kwargs['pk']
-        return reverse_lazy('car_detail', args=[str(car_id)])
+        return reverse_lazy('car_detail', kwargs={'pk': car_id})
 
 
 class CarDeleteView(DeleteView):
     template_name = 'confirm_delete.html'
     model = Car
-    success_url = reverse_lazy('cars')
+    success_url = reverse_lazy('')
 
 
 class RentCreateView(LoginRequiredMixin, CreateView):
     model = Rent
     form_class = RentForm
     template_name = 'create_rent.html'
-    success_url = reverse_lazy('cars')
+    success_url = reverse_lazy('')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -87,7 +87,7 @@ class RentCreateView(LoginRequiredMixin, CreateView):
 
 class SubmittableLoginView(LoginView):
     template_name = 'form.html'
-    next_page = reverse_lazy('cars')
+    next_page = reverse_lazy('')
 
 
 class RegisterView(CreateView):
@@ -97,7 +97,7 @@ class RegisterView(CreateView):
 
 
 class Logout(LogoutView):
-    next_page = reverse_lazy('cars')
+    next_page = reverse_lazy('')
 
 
 class UserRentalsView(LoginRequiredMixin, ListView):
@@ -160,3 +160,43 @@ class UserProfileEditView(LoginRequiredMixin, UpdateView):
 
     def get_object(self, queryset=None):
         return self.request.user.userprofile
+
+
+class AdminOnlyView(UserPassesTestMixin, TemplateView):
+    template_name = 'admin_panel.html'
+
+    def test_func(self):
+        return self.request.user.is_superuser
+
+
+class DeleteCarFromList(FormView):
+    template_name = 'delete_car_list.html'
+    form_class = DeleteCarForm
+
+    def form_valid(self, form):
+        car_id = form.cleaned_data['car_id']
+        car = get_object_or_404(Car, id=car_id)
+        car.delete()
+        return redirect('admin_panel')
+
+
+class EditCarFromList(FormView):
+    template_name = 'edit_car_list.html'
+    form_class = EditCarForm
+
+    def form_valid(self, form):
+        car_id = form.cleaned_data['car_id']
+        return redirect('cars_update', pk=car_id.id)
+
+
+class RentAdminView(ListView):
+    template_name = 'rent_admin.html'
+    model = Rent
+
+    context_object_name = 'rents'
+
+    def get_queryset(self):
+        return Rent.objects.all()
+
+
+

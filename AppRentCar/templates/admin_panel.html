@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Panel administracyjny</h1>
+
+<ul>
+    <li><a href="{% url 'cars_create' %}">Dodaj pojazd</a></li>
+    <li><a href="{% url 'delete_car_from_list' %}">Usuń pojazd</a> </li>
+    <li><a href="{% url 'edit_car_from_list' %}">Edytuj pojazd</a> </li>
+    <li><a href="{% url 'rent_admin' %}">Historia rezerwacji</a> </li>
+</ul>
+
+{% endblock %}

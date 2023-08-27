@@ -1,9 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
     <h1>Flota pojazdów</h1>
-    <a href="{% url 'cars_create' %}">
-        <button type="button">Dodaj Pojazd</button>
-    </a>
     {% for car in object_list %}
         <p><a href="{% url 'car_detail' car.id %}">
             <b>{{ car.brand }} {{ car.model }}</b></a></p>
