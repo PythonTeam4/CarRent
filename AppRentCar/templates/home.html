@@ -5,7 +5,7 @@
 <input type="text" id="end-date" placeholder="Data końcowa">
 <button id="check-availability">Sprawdź dostępność</button>
 
-{% endblock %}
+
 
 <script>
 $(function() {
@@ -17,8 +17,11 @@ $(function() {
         if (startDate && endDate) {
             var formattedStartDate = $.datepicker.formatDate("yy-mm-dd", startDate);
             var formattedEndDate = $.datepicker.formatDate("yy-mm-dd", endDate);
-            window.location.href = "/available-cars/?start_date=" + formattedStartDate + "&end_date=" + formattedEndDate;
+            window.location.href = "/available-cars/?start_date=" + formattedStartDate + "&end_date=" +
+                formattedEndDate;
         }
     });
 });
 </script>
+
+{% endblock %}

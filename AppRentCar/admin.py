@@ -16,7 +16,7 @@ class CarAdmin(ModelAdmin):
 class RentalTermsAdmin(ModelAdmin):
     """ personalization of the admin panel """
     ordering = ['id']
-    list_display = ['id', 'car', 'regular_price', 'premium_price']
+    list_display = ['id', 'car', 'price']
 
 
 class UserProfileAdmin(ModelAdmin):

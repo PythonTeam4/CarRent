@@ -9,9 +9,9 @@
     </a>
     <div class="car-details">
         <h1>{{ car.brand }} {{ car.model }}</h1>
-        {% if car.avatar_thumbnail %}
+        {% if car.avatar %}
             <span class="avatar">
-                <img src="{% url 'images' car.avatar %}"  height="500" width="500">
+                <img src="{% url 'images' car.avatar %}"  height="150" width="200">
             </span>
         {% else %}
             <p>Brak zdjęcia</p>

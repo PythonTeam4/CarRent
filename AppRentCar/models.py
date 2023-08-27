@@ -58,19 +58,9 @@ class UserProfile(BaseModel):
         options={'quality': 80})
     phone = models.CharField(max_length=32)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    rentals_count = models.PositiveIntegerField(default=0)
-
-    def is_premium(self):
-        return self.rentals_count >= 26
-
-    def get_display_price(self):
-        if self.is_premium():
-            return "Premium"
-        else:
-            return "Regular"
 
     def __str__(self):
-        return f"{self.user.username} - {self.get_display_price()}"
+        return f"{self.user.username}"
 
 
 class CompanyBranches(BaseModel):
@@ -84,11 +74,10 @@ class CompanyBranches(BaseModel):
 class RentalTerms(BaseModel):
     """Rental Terms class """
     car = models.ForeignKey(Car, on_delete=models.CASCADE)
-    regular_price = models.DecimalField(max_digits=16, decimal_places=2, null=True)
-    premium_price = models.DecimalField(max_digits=16, decimal_places=2, null=True)
+    price = models.DecimalField(max_digits=16, decimal_places=2, null=True)
 
     def __str__(self):
-        return f"{self.car.brand} {self.car.model}"
+        return f"{self.car.brand} {self.car.model} {self.price}"
 
 
 class Rent(BaseModel):
@@ -122,12 +111,7 @@ class Rent(BaseModel):
             return True
 
     def save(self, *args, **kwargs):
-        if self.rental_terms and self.period:
-            if self.client.userprofile.premium:
-                self.amount = self.rental_terms.premium_price * self.period
-            else:
-                self.amount = self.rental_terms.regular_price * self.period
-
+        self.amount = self.rental_terms.price * self.period
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -138,4 +122,6 @@ class Rent(BaseModel):
         if self.start_date and self.end_date:
             delta = self.end_date - self.start_date
             return delta.days
-        return 0
+        else:
+            return 0
+
