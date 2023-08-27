@@ -2,10 +2,12 @@
 
 {% block content %}
     <h1>Twój Profil</h1>
-    <span class="avatar">
-        <img src="{% url 'images' user_profile.avatar %}"  height="200" width="150">
-    </span>
+    {% if user_profile.avatar %}
+        <span class="avatar">
+            <img src="{% url 'images' user_profile.avatar %}" height="200" width="150">
+        </span>
+    {% endif %}
     <p>Użytkownik: {{ user_profile.user.username }}</p>
     <p>Telefon: {{ user_profile.phone }}</p>
-    <p>Status: {{ user_profile.get_display_price }}</p>
+    <p>Email: {{ user.email }}</p>
 {% endblock %}

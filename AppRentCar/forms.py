@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 
 from .models import Car, Rent, RentalTerms
 
@@ -41,8 +42,12 @@ class RentForm(forms.ModelForm):
 
 
 class SignUpForm(UserCreationForm):
-    class Meta(UserCreationForm.Meta):
-        fields = ['username', 'first_name']
+    avatar = forms.ImageField(required=False)
+    phone = forms.CharField(max_length=32)
+
+    class Meta:
+        model = User
+        fields = ['username', 'first_name', 'email', 'phone', 'password1', 'password2', 'avatar']
 
     def save(self, commit=True):
         self.instance.is_active = False

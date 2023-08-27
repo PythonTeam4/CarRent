@@ -1,6 +1,8 @@
 from django.core.exceptions import ValidationError
 from django.db.models import Q
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from imagekit.models import ImageSpecField
 from pilkit.processors import ResizeToFill
 from django.contrib.auth.models import User
@@ -61,6 +63,13 @@ class UserProfile(BaseModel):
 
     def __str__(self):
         return f"{self.user.username}"
+
+    @receiver(post_save, sender=User)
+    def create_user_profile(sender, instance, created, **kwargs):
+        if created:
+            UserProfile.objects.create(user=instance)
+
+    post_save.connect(create_user_profile, sender=User)
 
 
 class CompanyBranches(BaseModel):
