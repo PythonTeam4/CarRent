@@ -2,6 +2,7 @@
 
 {% block content %}
     <h1>Twój Profil</h1>
+<a href="{% url 'edit_profile' %}">Edytuj</a>
     {% if user_profile.avatar %}
         <span class="avatar">
             <img src="{% url 'images' user_profile.avatar %}" height="200" width="150">

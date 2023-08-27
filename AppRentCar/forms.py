@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
-from .models import Car, Rent, RentalTerms
+from .models import Car, Rent, RentalTerms, UserProfile
 
 
 class CarForm(forms.ModelForm):
@@ -57,3 +57,9 @@ class SignUpForm(UserCreationForm):
 class AvailabilityForm(forms.Form):
     start_date = forms.DateField()
     end_date = forms.DateField()
+
+
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ['avatar', 'phone']
