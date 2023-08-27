@@ -7,7 +7,7 @@
     {% for car in object_list %}
         <p><a href="{% url 'car_detail' car.id %}">
             <b>{{ car.brand }} {{ car.model }}</b></a></p>
-        {% if car.avatar %}
+        {% if car.avatar_thumbnail %}
             <span class="avatar">
                 <img src="{% url 'images' car.avatar %}"
                      height="150" width="250">

@@ -5,6 +5,8 @@ from imagekit.models import ImageSpecField
 from pilkit.processors import ResizeToFill
 from django.contrib.auth.models import User
 
+from .types import *
+
 
 class BaseModel(models.Model):
     """Base model."""
@@ -17,37 +19,10 @@ class BaseModel(models.Model):
 
 
 class Car(BaseModel):
-    type_engines = {
-        ('Benzyna', 'Benzyna'),
-        ('Diesel', 'Diesel'),
-        ('Hybryda', 'Hybryda'),
-        ('Elektryczny', 'Elektryczny')
-    }
-    type_transmission = {
-        ('Automatyczna', 'Automatyczna'),
-        ('Manuala', 'Manualna')
-    }
-    number_of_gears = {
-        ('5', '5'),
-        ('6', '6'),
-        ('7', '7'),
-        ('8', '8')
-    }
-    type_drives = {
-        ('Przedni', 'Przedni'),
-        ('Tylni', 'Tylni'),
-        ('4x4', '4x4')
-    }
-    type_car = {
-        ('Kombi', 'Kombi'),
-        ('Sedan', 'Sedan'),
-        ('Coupe', 'Coupe'),
-        ('Hatchback', 'Hatchback'),
-        ('Suv', 'Suv'),
-        ('Van', 'Van'),
-        ('Shooting brake', 'Shooting brake')
-    }
-    avatar = models.ImageField(upload_to='media/avatars/', blank=True, null=True)
+    """Car Model"""
+
+    avatar = models.ImageField(
+        upload_to='media/avatars/', blank=True, null=True)
     avatar_thumbnail = ImageSpecField(
         source='avatar',
         processors=[ResizeToFill(100, 100)],
@@ -73,7 +48,9 @@ class Car(BaseModel):
 
 
 class UserProfile(BaseModel):
-    avatar = models.ImageField(upload_to='media/avatars/', blank=True, null=True)
+    """User Profile class """
+    avatar = models.ImageField(
+        upload_to='media/avatars/', blank=True, null=True)
     avatar_thumbnail = ImageSpecField(
         source='avatar',
         processors=[ResizeToFill(100, 100)],
@@ -81,12 +58,23 @@ class UserProfile(BaseModel):
         options={'quality': 80})
     phone = models.CharField(max_length=32)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    rentals_count = models.PositiveIntegerField(default=0)
+
+    def is_premium(self):
+        return self.rentals_count >= 26
+
+    def get_display_price(self):
+        if self.is_premium():
+            return "Premium"
+        else:
+            return "Regular"
 
     def __str__(self):
-        return f"{self.user.username}"
+        return f"{self.user.username} - {self.get_display_price()}"
 
 
 class CompanyBranches(BaseModel):
+    """Comapny Branches"""
     city = models.CharField(max_length=32, unique=True)
 
     def __str__(self):
@@ -94,20 +82,25 @@ class CompanyBranches(BaseModel):
 
 
 class RentalTerms(BaseModel):
+    """Rental Terms class """
     car = models.ForeignKey(Car, on_delete=models.CASCADE)
-    price = models.DecimalField(max_digits=16, decimal_places=2)
+    regular_price = models.DecimalField(max_digits=16, decimal_places=2, null=True)
+    premium_price = models.DecimalField(max_digits=16, decimal_places=2, null=True)
 
     def __str__(self):
-        return f"{self.car.brand} {self.car.model}  {self.price}"
+        return f"{self.car.brand} {self.car.model}"
 
 
 class Rent(BaseModel):
+    """Rent class """
     rental_terms = models.ForeignKey(RentalTerms, on_delete=models.CASCADE)
     client = models.ForeignKey(User, on_delete=models.CASCADE)
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
-    take_from = models.ForeignKey(CompanyBranches, related_name='rents_taken', on_delete=models.CASCADE)
-    take_back = models.ForeignKey(CompanyBranches, related_name='rents_returned', on_delete=models.CASCADE)
+    take_from = models.ForeignKey(
+        CompanyBranches, related_name='rents_taken', on_delete=models.CASCADE)
+    take_back = models.ForeignKey(
+        CompanyBranches, related_name='rents_returned', on_delete=models.CASCADE)
     amount = models.DecimalField(max_digits=6, decimal_places=2, default=0)
 
     def clean(self):
@@ -130,12 +123,15 @@ class Rent(BaseModel):
 
     def save(self, *args, **kwargs):
         if self.rental_terms and self.period:
-            self.amount = self.rental_terms.price * self.period
+            if self.client.userprofile.premium:
+                self.amount = self.rental_terms.premium_price * self.period
+            else:
+                self.amount = self.rental_terms.regular_price * self.period
 
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"Rent of {self.rental_terms} by {self.client}"
+        return f"{self.rental_terms} by {self.client}"
 
     @property
     def period(self):

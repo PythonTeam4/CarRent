@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Moje rezerwacje</h1>
+    <br></br>
+    {% if rentals %}
+        <ul>
+            {% for rental in rentals %}
+                <li>{{ rental.rental_terms.car }} - {{ rental.start_date }} to {{ rental.end_date }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Brak dostępnych rezerwacji.</p>
+    {% endif %}
+
+{% endblock %}
+

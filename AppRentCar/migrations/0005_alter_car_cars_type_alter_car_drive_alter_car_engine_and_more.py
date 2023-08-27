@@ -13,21 +13,25 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='car',
             name='cars_type',
-            field=models.CharField(choices=[('Suv', 'Suv'), ('Sedan', 'Sedan'), ('Van', 'Van'), ('Shooting brake', 'Shooting brake'), ('Kombi', 'Kombi'), ('Hatchback', 'Hatchback'), ('Coupe', 'Coupe')], max_length=32),
+            field=models.CharField(choices=[('Suv', 'Suv'), ('Sedan', 'Sedan'), ('Van', 'Van'), (
+                'Shooting brake', 'Shooting brake'), ('Kombi', 'Kombi'), ('Hatchback', 'Hatchback'), ('Coupe', 'Coupe')], max_length=32),
         ),
         migrations.AlterField(
             model_name='car',
             name='drive',
-            field=models.CharField(choices=[('4x4', '4x4'), ('Tylni', 'Tylni'), ('Przedni', 'Przedni')], max_length=32),
+            field=models.CharField(choices=[(
+                '4x4', '4x4'), ('Tylni', 'Tylni'), ('Przedni', 'Przedni')], max_length=32),
         ),
         migrations.AlterField(
             model_name='car',
             name='engine',
-            field=models.CharField(choices=[('Elektryczny', 'Elektryczny'), ('Benzyna', 'Benzyna'), ('Hybryda', 'Hybryda'), ('Diesel', 'Diesel')], max_length=32),
+            field=models.CharField(choices=[('Elektryczny', 'Elektryczny'), (
+                'Benzyna', 'Benzyna'), ('Hybryda', 'Hybryda'), ('Diesel', 'Diesel')], max_length=32),
         ),
         migrations.AlterField(
             model_name='car',
             name='no_gears',
-            field=models.CharField(choices=[('5', '5'), ('8', '8'), ('6', '6'), ('7', '7')], max_length=8),
+            field=models.CharField(
+                choices=[('5', '5'), ('8', '8'), ('6', '6'), ('7', '7')], max_length=8),
         ),
     ]

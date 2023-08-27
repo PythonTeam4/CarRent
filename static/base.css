@@ -1,0 +1,21 @@
+.offcanvas.show {
+        transform: translateX(0);
+}
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  flex: 1;
+}
+
+.fotter{
+  height: 125px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
