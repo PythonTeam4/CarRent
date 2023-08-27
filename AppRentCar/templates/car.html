@@ -7,6 +7,17 @@
     <a href={% url 'cars_delete' car.id %}>
         <button type="button">Usuń</button>
     </a>
+
+    <a href="{% url 'create_rent' car_id=car.id %}">
+        <button type="button">Rezerwacja</button>
+    </a>
+
+    <a href={% url 'cars' %}>
+        <button type="button">Wróć</button>
+    </a>
+
+
+
     <div class="car-details">
         <h1>{{ car.brand }} {{ car.model }}</h1>
         {% if car.avatar %}

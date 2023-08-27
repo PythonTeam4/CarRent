@@ -17,23 +17,30 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Car',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
-                ('avatar', models.ImageField(blank=True, null=True, upload_to='media/avatars/')),
+                ('avatar', models.ImageField(blank=True,
+                 null=True, upload_to='media/avatars/')),
                 ('brand', models.CharField(max_length=32)),
                 ('model', models.CharField(max_length=32)),
-                ('cars_type', models.CharField(choices=[('Kombi', 'Kombi'), ('Van', 'Van'), ('Shooting brake', 'Shooting brake'), ('Suv', 'Suv'), ('Coupe', 'Coupe'), ('Sedan', 'Sedan'), ('Hatchback', 'Hatchback')], max_length=32)),
-                ('engine', models.CharField(choices=[('Elektryczny', 'Elektryczny'), ('Benzyna', 'Benzyna'), ('Hybryda', 'Hybryda'), ('Diesel', 'Diesel')], max_length=32)),
+                ('cars_type', models.CharField(choices=[('Kombi', 'Kombi'), ('Van', 'Van'), ('Shooting brake', 'Shooting brake'), (
+                    'Suv', 'Suv'), ('Coupe', 'Coupe'), ('Sedan', 'Sedan'), ('Hatchback', 'Hatchback')], max_length=32)),
+                ('engine', models.CharField(choices=[('Elektryczny', 'Elektryczny'), (
+                    'Benzyna', 'Benzyna'), ('Hybryda', 'Hybryda'), ('Diesel', 'Diesel')], max_length=32)),
                 ('capacity', models.FloatField()),
                 ('year', models.CharField(max_length=8)),
                 ('number_of_seats', models.IntegerField()),
                 ('consumption', models.CharField(max_length=32)),
                 ('power', models.CharField(max_length=16)),
                 ('car_mileage', models.CharField(max_length=16)),
-                ('transmission', models.CharField(choices=[('Manuala', 'Manualna'), ('Automatyczna', 'Automatyczna')], max_length=32)),
-                ('no_gears', models.CharField(choices=[('8', '8'), ('5', '5'), ('7', '7'), ('6', '6')], max_length=8)),
-                ('drive', models.CharField(choices=[('4x4', '4x4'), ('Przedni', 'Przedni'), ('Tylni', 'Tylni')], max_length=32)),
+                ('transmission', models.CharField(choices=[
+                 ('Manuala', 'Manualna'), ('Automatyczna', 'Automatyczna')], max_length=32)),
+                ('no_gears', models.CharField(choices=[
+                 ('8', '8'), ('5', '5'), ('7', '7'), ('6', '6')], max_length=8)),
+                ('drive', models.CharField(choices=[
+                 ('4x4', '4x4'), ('Przedni', 'Przedni'), ('Tylni', 'Tylni')], max_length=32)),
             ],
             options={
                 'abstract': False,
@@ -42,7 +49,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='CompanyBranches',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
                 ('city', models.CharField(max_length=32, unique=True)),
@@ -54,12 +62,15 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='UserProfile',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
-                ('avatar', models.ImageField(blank=True, null=True, upload_to='media/avatars/')),
+                ('avatar', models.ImageField(blank=True,
+                 null=True, upload_to='media/avatars/')),
                 ('phone', models.CharField(max_length=32)),
-                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                ('user', models.OneToOneField(
+                    on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'abstract': False,
@@ -68,11 +79,13 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='RentalTerms',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
                 ('price', models.DecimalField(decimal_places=2, max_digits=16)),
-                ('car_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='AppRentCar.car')),
+                ('car_id', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE, to='AppRentCar.car')),
             ],
             options={
                 'abstract': False,
@@ -81,16 +94,22 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Rent',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
                 ('start_date', models.DateTimeField()),
                 ('end_date', models.DateTimeField()),
-                ('amount', models.DecimalField(decimal_places=2, default=0, max_digits=6)),
-                ('car', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='AppRentCar.rentalterms')),
-                ('client', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='AppRentCar.userprofile')),
-                ('take_back', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='rents_returned', to='AppRentCar.companybranches')),
-                ('take_from', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='rents_taken', to='AppRentCar.companybranches')),
+                ('amount', models.DecimalField(
+                    decimal_places=2, default=0, max_digits=6)),
+                ('car', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE, to='AppRentCar.rentalterms')),
+                ('client', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE, to='AppRentCar.userprofile')),
+                ('take_back', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                 related_name='rents_returned', to='AppRentCar.companybranches')),
+                ('take_from', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                 related_name='rents_taken', to='AppRentCar.companybranches')),
             ],
             options={
                 'abstract': False,

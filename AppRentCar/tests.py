@@ -8,7 +8,8 @@ class RentAvailabilityTest(TestCase):
 
     def setUp(self):
         User = get_user_model()
-        self.user = User.objects.create_user(username='testuser', password='testpassword')
+        self.user = User.objects.create_user(
+            username='testuser', password='testpassword')
         self.car = Car.objects.create(
             brand='Brand',
             model='Model',
@@ -24,12 +25,14 @@ class RentAvailabilityTest(TestCase):
             no_gears='6',
             drive='Przedni'
         )
-        self.rental_terms = RentalTerms.objects.create(car=self.car, price=100.00)
+        self.rental_terms = RentalTerms.objects.create(
+            car=self.car, price=100.00)
         self.start_date = timezone.now()
         self.end_date = self.start_date + timezone.timedelta(days=5)
 
     def test_car_available(self):
-        rent = Rent(rental_terms=self.rental_terms, start_date=self.start_date, end_date=self.end_date)
+        rent = Rent(rental_terms=self.rental_terms,
+                    start_date=self.start_date, end_date=self.end_date)
         self.assertTrue(rent.is_car_available())
 
     def test_car_unavailable(self):

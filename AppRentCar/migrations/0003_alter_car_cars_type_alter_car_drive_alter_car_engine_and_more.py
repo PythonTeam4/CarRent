@@ -13,26 +13,31 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='car',
             name='cars_type',
-            field=models.CharField(choices=[('Shooting brake', 'Shooting brake'), ('Hatchback', 'Hatchback'), ('Sedan', 'Sedan'), ('Kombi', 'Kombi'), ('Van', 'Van'), ('Coupe', 'Coupe'), ('Suv', 'Suv')], max_length=32),
+            field=models.CharField(choices=[('Shooting brake', 'Shooting brake'), ('Hatchback', 'Hatchback'), (
+                'Sedan', 'Sedan'), ('Kombi', 'Kombi'), ('Van', 'Van'), ('Coupe', 'Coupe'), ('Suv', 'Suv')], max_length=32),
         ),
         migrations.AlterField(
             model_name='car',
             name='drive',
-            field=models.CharField(choices=[('Tylni', 'Tylni'), ('4x4', '4x4'), ('Przedni', 'Przedni')], max_length=32),
+            field=models.CharField(choices=[(
+                'Tylni', 'Tylni'), ('4x4', '4x4'), ('Przedni', 'Przedni')], max_length=32),
         ),
         migrations.AlterField(
             model_name='car',
             name='engine',
-            field=models.CharField(choices=[('Diesel', 'Diesel'), ('Hybryda', 'Hybryda'), ('Benzyna', 'Benzyna'), ('Elektryczny', 'Elektryczny')], max_length=32),
+            field=models.CharField(choices=[('Diesel', 'Diesel'), ('Hybryda', 'Hybryda'), (
+                'Benzyna', 'Benzyna'), ('Elektryczny', 'Elektryczny')], max_length=32),
         ),
         migrations.AlterField(
             model_name='car',
             name='no_gears',
-            field=models.CharField(choices=[('5', '5'), ('6', '6'), ('8', '8'), ('7', '7')], max_length=8),
+            field=models.CharField(
+                choices=[('5', '5'), ('6', '6'), ('8', '8'), ('7', '7')], max_length=8),
         ),
         migrations.AlterField(
             model_name='car',
             name='transmission',
-            field=models.CharField(choices=[('Manuala', 'Manualna'), ('Automatyczna', 'Automatyczna')], max_length=32),
+            field=models.CharField(
+                choices=[('Manuala', 'Manualna'), ('Automatyczna', 'Automatyczna')], max_length=32),
         ),
     ]

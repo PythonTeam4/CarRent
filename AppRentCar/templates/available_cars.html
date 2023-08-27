@@ -1,22 +1,24 @@
-{% extends "base.html" %}
-
+{% extends 'base.html' %}
 {% block content %}
-    <h1>Flota pojazdów</h1>
-    <a href="{% url 'cars_create' %}">
-        <button type="button">Dodaj Pojazd</button>
-    </a>
-     <div class="container-fluid">
+
+{% if available_cars %}
+    <h2>Dostępne samochody:</h2>
+   <div class="container-fluid">
         <div class="row">
             {% for car in object_list %}
             <div class="col-md-4 mb-4">
                 <div class="card">
                     <img src="{% url 'images' car.avatar %}" height="150" width="250">
                     <div class="card-body">
-                        <!-- Wyświetl markę, model i rok -->
                         <a href="{% url 'car_detail' car.id %}">{{ car.brand }} {{ car.model }} <br>{{ car.year }}</br>
                         </a>
                     </div>
                 </div>
             </div>
-            {% endfor %}
+        {% endfor %}
+
+{% else %}
+    <p>Brak dostępnych samochodów w podanym terminie.</p>
+{% endif %}
+
 {% endblock %}

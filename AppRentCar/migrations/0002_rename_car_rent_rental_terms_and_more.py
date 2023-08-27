@@ -26,31 +26,37 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='car',
             name='cars_type',
-            field=models.CharField(choices=[('Suv', 'Suv'), ('Kombi', 'Kombi'), ('Sedan', 'Sedan'), ('Hatchback', 'Hatchback'), ('Shooting brake', 'Shooting brake'), ('Van', 'Van'), ('Coupe', 'Coupe')], max_length=32),
+            field=models.CharField(choices=[('Suv', 'Suv'), ('Kombi', 'Kombi'), ('Sedan', 'Sedan'), ('Hatchback', 'Hatchback'), (
+                'Shooting brake', 'Shooting brake'), ('Van', 'Van'), ('Coupe', 'Coupe')], max_length=32),
         ),
         migrations.AlterField(
             model_name='car',
             name='drive',
-            field=models.CharField(choices=[('4x4', '4x4'), ('Tylni', 'Tylni'), ('Przedni', 'Przedni')], max_length=32),
+            field=models.CharField(choices=[(
+                '4x4', '4x4'), ('Tylni', 'Tylni'), ('Przedni', 'Przedni')], max_length=32),
         ),
         migrations.AlterField(
             model_name='car',
             name='engine',
-            field=models.CharField(choices=[('Hybryda', 'Hybryda'), ('Elektryczny', 'Elektryczny'), ('Diesel', 'Diesel'), ('Benzyna', 'Benzyna')], max_length=32),
+            field=models.CharField(choices=[('Hybryda', 'Hybryda'), ('Elektryczny', 'Elektryczny'), (
+                'Diesel', 'Diesel'), ('Benzyna', 'Benzyna')], max_length=32),
         ),
         migrations.AlterField(
             model_name='car',
             name='no_gears',
-            field=models.CharField(choices=[('5', '5'), ('7', '7'), ('6', '6'), ('8', '8')], max_length=8),
+            field=models.CharField(
+                choices=[('5', '5'), ('7', '7'), ('6', '6'), ('8', '8')], max_length=8),
         ),
         migrations.AlterField(
             model_name='car',
             name='transmission',
-            field=models.CharField(choices=[('Automatyczna', 'Automatyczna'), ('Manuala', 'Manualna')], max_length=32),
+            field=models.CharField(
+                choices=[('Automatyczna', 'Automatyczna'), ('Manuala', 'Manualna')], max_length=32),
         ),
         migrations.AlterField(
             model_name='rent',
             name='client',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
         ),
     ]
