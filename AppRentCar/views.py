@@ -7,7 +7,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, FormView, UpdateView, \
     DeleteView, CreateView, TemplateView
 
-from .forms import CarForm, RentForm, AvailabilityForm
+from .forms import CarForm, RentForm, AvailabilityForm, UserProfileForm
 from .models import Car, Rent, RentalTerms, UserProfile
 from datetime import datetime
 
@@ -147,6 +147,16 @@ class UserProfileView(LoginRequiredMixin, DetailView):
     template_name = 'profil.html'
     context_object_name = 'user_profile'
     login_url = '/login/'
+
+    def get_object(self, queryset=None):
+        return self.request.user.userprofile
+
+
+class UserProfileEditView(LoginRequiredMixin, UpdateView):
+    model = UserProfile
+    form_class = UserProfileForm
+    template_name = 'edit_profile.html'
+    success_url = '/profil/'
 
     def get_object(self, queryset=None):
         return self.request.user.userprofile
