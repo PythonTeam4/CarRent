@@ -64,10 +64,8 @@ class RentCreateView(LoginRequiredMixin, CreateView):
         car = get_object_or_404(Car, pk=car_id)
         context['car'] = car
 
-        user_is_premium = self.request.user.userprofile.is_premium()
         form = self.get_form()
         form.fields['rental_terms'].queryset = RentalTerms.objects.filter(car_id=car_id)
-        form.fields['rental_terms'].user_is_premium = user_is_premium
         context['form'] = form
 
         return context
@@ -78,14 +76,8 @@ class RentCreateView(LoginRequiredMixin, CreateView):
         rental_terms = form.cleaned_data['rental_terms']
         start_date = form.cleaned_data['start_date']
         end_date = form.cleaned_data['end_date']
-
-        user_is_premium = self.request.user.userprofile.is_premium()
-        if user_is_premium:
-            rental_price = rental_terms.premium_price
-        else:
-            rental_price = rental_terms.regular_price
-
         period = (end_date - start_date).days
+        rental_price = rental_terms.price
         rent = form.save(commit=False)
         rent.car = car
         rent.amount = rental_price * period

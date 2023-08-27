@@ -3,19 +3,7 @@
 {% block content %}
     <form method="post">
         {% csrf_token %}
-
-        <!-- Formularz wyświetlający pola do wypełnienia -->
         {{ form.as_p }}
-
-        <!-- Wyświetlanie informacji o cenie -->
-        <div>
-            {% if form.user_is_premium %}
-                <p><strong>Premium Price:</strong> {{ form.rental_terms.instance.premium_price }}</p>
-            {% else %}
-                <p><strong>Regular Price:</strong> {{ form.rental_terms.instance.regular_price }}</p>
-            {% endif %}
-        </div>
-
         <button type="submit">Submit</button>
     </form>
 {% endblock %}
