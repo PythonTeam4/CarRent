@@ -1,24 +1,86 @@
 {% extends 'base.html' %}
 {% block content %}
+<form method="get" id="car-filter-form">
+    {{ filter.form.non_field_errors }}
+    {{ form.engine.label_tag }} {{ filter.form.engine }}
+    {{ form.drive.label_tag }} {{ filter.form.drive }}
+    {{ form.transmission.label_tag }} {{ filter.form.transmission }}
+    {{ form.cars_type.label_tag}} {{ filter.form.cars_type }}
+    <input type="text" id="start-date" name="start_date" placeholder="Data początkowa" value="{{ start_date_param }}">
+    <input type="text" id="end-date" name="end_date" placeholder="Data końcowa" value="{{ end_date_param }}">
+    <button type="submit" id="filter-availability">Filtruj</button>
+</form>
 
 {% if available_cars %}
     <h2>Dostępne samochody:</h2>
-   <div class="container-fluid">
+    <div class="container-fluid">
         <div class="row">
             {% for car in object_list %}
-            <div class="col-md-4 mb-4">
-                <div class="card">
-                    <img src="{% url 'images' car.avatar %}" height="150" width="250">
-                    <div class="card-body">
-                        <a href="{% url 'car_detail' car.id %}">{{ car.brand }} {{ car.model }} <br>{{ car.year }}</br>
-                        </a>
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <img src="{% url 'images' car.avatar %}" height="150" width="250">
+                        <div class="card-body">
+                            <a href="{% url 'car_detail' car.id %}">{{ car.brand }} {{ car.model }} <br>{{ car.year }}</br>
+                            </a>
+                        </div>
                     </div>
                 </div>
-            </div>
-        {% endfor %}
-
+            {% endfor %}
+        </div>
+    </div>
 {% else %}
     <p>Brak dostępnych samochodów w podanym terminie.</p>
 {% endif %}
+<script>
+$(function() {
+    $("#start-date").datepicker();
+    $("#end-date").datepicker();
 
+    $("#car-filter-form").submit(function(event) {
+        event.preventDefault();
+
+        var startDate = $("#start-date").datepicker("getDate");
+        var endDate = $("#end-date").datepicker("getDate");
+
+        var engineType = $("#id_engine").val();
+        var driveType = $("#id_drive").val();
+        var transmission = $("#id_transmission").val();
+        var carsType = $("#id_cars_type").val();
+
+        if (startDate && endDate) {
+            var formattedStartDate = $.datepicker.formatDate("yy-mm-dd", startDate);
+            var formattedEndDate = $.datepicker.formatDate("yy-mm-dd", endDate);
+
+            var filterURL = "/available-cars/?start_date=" + formattedStartDate + "&end_date=" + formattedEndDate;
+            if (engineType) {
+                filterURL += "&engine=" + encodeURIComponent(engineType);
+            }
+            if (driveType) {
+                filterURL += "&drive=" + encodeURIComponent(driveType);
+            }
+            if (transmission) {
+                filterURL += "&transmission=" + encodeURIComponent(transmission);
+            }
+            if (carsType) {
+                filterURL += "&cars_type=" + encodeURIComponent(carsType);
+            }
+
+            window.location.href = filterURL;
+        }
+    });
+
+    var urlParams = new URLSearchParams(window.location.search);
+    var startParam = urlParams.get('start_date');
+    var endParam = urlParams.get('end_date');
+
+    if (!$("#start-date").val() && startParam) {
+        var startDate = new Date(startParam);
+        $("#start-date").datepicker("setDate", startDate);
+    }
+    if (!$("#end-date").val() && endParam) {
+        var endDate = new Date(endParam);
+        $("#end-date").datepicker("setDate", endDate);
+    }
+});
+</script>
 {% endblock %}

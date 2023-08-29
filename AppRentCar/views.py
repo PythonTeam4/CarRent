@@ -9,11 +9,34 @@ from django.views.generic import ListView, DetailView, FormView, UpdateView, \
 
 from .forms import CarForm, RentForm, AvailabilityForm, UserProfileForm, DeleteCarForm, EditCarForm
 from .models import Car, Rent, RentalTerms, UserProfile
-from datetime import datetime
+from datetime import datetime, timedelta
+import django_filters
 
 
-class HomeView(TemplateView):
+class CarFilter(django_filters.FilterSet):
+    class Meta:
+        model = Car
+        fields = ['engine', 'transmission', 'drive', 'cars_type']
+
+
+class HomeView(ListView):
     template_name = 'home.html'
+    model = Car
+    context_object_name = 'available_cars'
+
+    def get_queryset(self):
+        today = datetime.now().date()
+        next_week = today + timedelta(days=7)
+
+        conflicting_rents = Rent.objects.filter(
+            Q(start_date__range=(today, next_week)) |
+            Q(end_date__range=(today, next_week)) |
+            Q(start_date__lte=today, end_date__gte=next_week)
+        )
+        reserved_car_ids = conflicting_rents.values_list('rental_terms__car',
+                                                         flat=True)
+
+        return Car.objects.exclude(id__in=reserved_car_ids)
 
 
 class CarListView(ListView):
@@ -119,6 +142,11 @@ class AvailableCarsView(ListView):
     def get_queryset(self):
         start_date = self.request.GET.get('start_date')
         end_date = self.request.GET.get('end_date')
+        engine = self.request.GET.get('engine')
+        drive = self.request.GET.get('drive')
+        transmission = self.request.GET.get('transmission')
+        cars_type = self.request.GET.get('cars_type')
+
 
         if start_date and end_date:
             start_date = datetime.strptime(start_date, "%Y-%m-%d").date()
@@ -134,11 +162,24 @@ class AvailableCarsView(ListView):
         else:
             available_cars = Car.objects.all()
 
+        # Filtruj po parametrach engine i drive
+
+        if engine:
+            available_cars = available_cars.filter(engine=engine)
+        if drive:
+            available_cars = available_cars.filter(drive=drive)
+        if transmission:
+            available_cars = available_cars.filter(transmission=transmission)
+        if cars_type:
+            available_cars = available_cars.filter(cars_type=cars_type)
+
         return available_cars
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['form'] = self.form_class(self.request.GET)
+        context['filter'] = CarFilter(self.request.GET,
+                                      queryset=context['available_cars'])
         return context
 
 

@@ -3,6 +3,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
 from .models import Car, Rent, RentalTerms, UserProfile
+from .types import *
+
 
 
 class CarForm(forms.ModelForm):
@@ -57,6 +59,14 @@ class SignUpForm(UserCreationForm):
 class AvailabilityForm(forms.Form):
     start_date = forms.DateField()
     end_date = forms.DateField()
+    drive = forms.ChoiceField(
+        choices=type_drives, required=False, label="Napęd")
+    engine = forms.ChoiceField(
+        choices=type_engines, required=False, label="Silnik")
+    transmission = forms.ChoiceField(
+        choices=type_transmission, required=False, label="Skrzynia biegów")
+    cars_type = forms.ChoiceField(
+        choices=type_car, required=False, label="Typ pojazdu")
 
 
 class UserProfileForm(forms.ModelForm):
