@@ -1,9 +1,40 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Rezerwuj</button>
-    </form>
+<h1 class="text-primary" xmlns="http://www.w3.org/1999/html">Tworzenie Rezerwacji</h1>
+<!--<div class="card p-3 mt-3 border-primary" style="width: 80%; font-size: 16px; font-weight: bold">-->
+<form method="post" class="row g-3 ">
+    {% csrf_token %}
+    <div class="card p-3 mt-3 border-primary" style="width: 80%; font-size: 16px; font-weight: bold">
+    <div class="row g-3">
+      <div class="col-md-4 position-relative">
+        <label class="form-label">Warunki wyanjmu</label>
+          {{ form.rental_terms }}
+      </div>
+      <div class="col-md-4 position-relative">
+        <label class="form-label">Data od:</label>
+          {{ form.start_date }}
+      </div>
+        <div class="col-md-4 position-relative">
+        <label class="form-label">Data do:</label>
+          {{ form.end_date }}
+      </div>
+      <br><br>
+      <div class="col-md-4 position-relative">
+        <label class="form-label">Miejsce odbioru:</label>
+          {{ form.take_from }}
+      </div>
+      <div class="col-md-4 position-relative">
+        <label class="form-label">Miejsce zwrotu:</label>
+          {{ form.take_back}}
+      </div>
+
+    </div>
+    </div>
+    <div class="col-12">
+        <button class="btn btn-primary" type="submit">Utwórz</button>
+    </div>
+</form>
+<br>
+
 {% endblock %}
