@@ -1,10 +1,6 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <a href={% url 'create_rent' car.id %}>
-        <button type="button">Rezerwuj</button>
-    </a>
-
     <div class="car-details">
         <h1>{{ car.brand }} {{ car.model }}</h1>
         {% if car.avatar %}
@@ -26,4 +22,7 @@
         <p>Liczba biegów: {{ car.no_gears }}</p>
         <p>Napęd: {{ car.drive }}</p>
     </div>
+    <a href={% url 'create_rent' car.id %}>
+        <button type="button">Rezerwuj</button>
+    </a>
 {% endblock %}

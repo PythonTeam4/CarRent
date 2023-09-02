@@ -49,14 +49,14 @@ class CarUpdateView(UpdateView):
 class CarDeleteView(DeleteView):
     template_name = 'confirm_delete.html'
     model = Car
-    success_url = reverse_lazy('')
+    success_url = reverse_lazy('home')
 
 
 class RentCreateView(LoginRequiredMixin, CreateView):
     model = Rent
     form_class = RentForm
     template_name = 'create_rent.html'
-    success_url = reverse_lazy('')
+    success_url = reverse_lazy('home')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -87,7 +87,7 @@ class RentCreateView(LoginRequiredMixin, CreateView):
 
 class SubmittableLoginView(LoginView):
     template_name = 'form.html'
-    next_page = reverse_lazy('')
+    next_page = reverse_lazy('home')
 
 
 class RegisterView(CreateView):
@@ -97,7 +97,7 @@ class RegisterView(CreateView):
 
 
 class Logout(LogoutView):
-    next_page = reverse_lazy('')
+    next_page = reverse_lazy('home')
 
 
 class UserRentalsView(LoginRequiredMixin, ListView):
