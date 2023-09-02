@@ -1,27 +1,64 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 
 {% block content %}
-<input type="text" id="start-date" placeholder="Data początkowa">
-<input type="text" id="end-date" placeholder="Data końcowa">
-<button id="check-availability">Sprawdź dostępność</button>
-
-
-
-<script>
-$(function() {
-    $("#start-date").datepicker();
-    $("#end-date").datepicker();
-    $("#check-availability").click(function() {
-        var startDate = $("#start-date").datepicker("getDate");
-        var endDate = $("#end-date").datepicker("getDate");
-        if (startDate && endDate) {
-            var formattedStartDate = $.datepicker.formatDate("yy-mm-dd", startDate);
-            var formattedEndDate = $.datepicker.formatDate("yy-mm-dd", endDate);
-            window.location.href = "/available-cars/?start_date=" + formattedStartDate + "&end_date=" +
-                formattedEndDate;
-        }
-    });
-});
-</script>
-
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <h2 class="text-primary" xmlns="http://www.w3.org/1999/html">Filtruj samochody:</h2>
+            <form action="" method="get">
+                <div class="mb-3">
+                    <label for="{{ filter.form.start_date.id_for_label }}" class="form-label"><strong>Data od:</strong></label>
+                    {{ filter.form.start_date }}
+                </div>
+                <div class="mb-3">
+                    <label for="{{ filter.form.end_date.id_for_label }}" class="form-label"><strong>Data do:</strong></label>
+                    {{ filter.form.end_date }}
+                </div>
+                <div class="mb-3">
+                    <label for="{{ filter.form.engine.id_for_label }}" class="form-label"><strong>Silnik:</strong></label>
+                    {{ filter.form.engine }}
+                </div>
+                <div class="mb-3">
+                    <label for="{{ filter.form.transmission.id_for_label }}" class="form-label"><strong>Skrzynia biegów:</strong></label>
+                    {{ filter.form.transmission }}
+                </div>
+                <div class="mb-3">
+                    <label for="{{ filter.form.drive.id_for_label }}" class="form-label"><strong>Napęd:</strong></label>
+                    {{ filter.form.drive }}
+                </div>
+                <div class="mb-3">
+                    <label for="{{ filter.form.cars_type.id_for_label }}" class="form-label"><strong>Typ pojazdu:</strong></label>
+                    {{ filter.form.cars_type }}
+                </div>
+                <button type="submit" class="btn btn-primary">Filtruj</button>
+            </form>
+        </div>
+        <div class="col-md-8">
+            <h2 class="text-primary" xmlns="http://www.w3.org/1999/html">Dostępne samochody:</h2>
+            <div class="row">
+                {% if object_list %}
+                    {% for car in object_list %}
+                        <div class="col-md-6 mb-4">
+                            <div class="card">
+                                <div class="image-container">
+                                    {% if car.avatar %}
+                                        <img src="{% url 'images' car.avatar %}" class="card-img-top" alt="Car Image">
+                                    {% endif %}
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ car.brand }} {{ car.model }} {{ car.year }}</h5>
+                                    <a href="{% url 'car_detail' car.id %}" class="btn btn-primary">Szczegóły</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="col">
+                        <p>Brak dostępnych pojazdów.</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
