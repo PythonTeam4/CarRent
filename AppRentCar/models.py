@@ -55,14 +55,16 @@ class UserProfile(BaseModel):
         upload_to='media/avatars/', blank=True, null=True)
     avatar_thumbnail = ImageSpecField(
         source='avatar',
-        processors=[ResizeToFill(100, 100)],
+        processors=[ResizeToFill(360, 360)],
         format='JPEG',
         options={'quality': 80})
     phone = models.CharField(max_length=32)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=30, null=True)
+    last_name = models.CharField(max_length=30, null=True)
 
     def __str__(self):
-        return f"{self.user.username}"
+        return f"{self.user.username} {self.first_name} {self.last_name}"
 
     @receiver(post_save, sender=User)
     def create_user_profile(sender, instance, created, **kwargs):

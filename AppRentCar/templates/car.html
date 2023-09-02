@@ -1,29 +1,29 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <a href={% url 'create_rent' car.id %}>
-        <button type="button">Rezerwuj</button>
-    </a>
+<a href={% url 'create_rent' car.id %}>
+<button type="button">Rezerwuj</button>
+</a>
 
-    <div class="car-details">
-        <h1>{{ car.brand }} {{ car.model }}</h1>
-        {% if car.avatar %}
-            <span class="avatar">
-                <img src="{% url 'images' car.avatar %}"  height="150" width="200">
+<div class="car-details">
+    <h1>{{ car.brand }} {{ car.model }}</h1>
+    {% if car.avatar %}
+    <span class="avatar">
+                <img src="{% url 'images' car.avatar %}" height="150" width="200">
             </span>
-        {% else %}
-            <p>Brak zdjęcia</p>
-        {% endif %}
-        <p>Typ: {{ car.cars_type }}</p>
-        <p>Typ silnika: {{ car.engine }}</p>
-        <p>Pojemność: {{ car.capacity }}</p>
-        <p>Rok: {{ car.year }}</p>
-        <p>Liczba miejsc siedzących: {{ car.number_of_seats }}</p>
-        <p>Spalanie: {{ car.consumption }}</p>
-        <p>Moc: {{ car.power }}</p>
-        <p>Przebieg: {{ car.car_mileage }}</p>
-        <p>Skrzynia biegów: {{ car.transmission }}</p>
-        <p>Liczba biegów: {{ car.no_gears }}</p>
-        <p>Napęd: {{ car.drive }}</p>
-    </div>
+    {% else %}
+    <p>Brak zdjęcia</p>
+    {% endif %}
+    <p>Typ: {{ car.cars_type }}</p>
+    <p>Typ silnika: {{ car.engine }}</p>
+    <p>Pojemność: {{ car.capacity }}</p>
+    <p>Rok: {{ car.year }}</p>
+    <p>Liczba miejsc siedzących: {{ car.number_of_seats }}</p>
+    <p>Spalanie: {{ car.consumption }}</p>
+    <p>Moc: {{ car.power }}</p>
+    <p>Przebieg: {{ car.car_mileage }}</p>
+    <p>Skrzynia biegów: {{ car.transmission }}</p>
+    <p>Liczba biegów: {{ car.no_gears }}</p>
+    <p>Napęd: {{ car.drive }}</p>
+</div>
 {% endblock %}

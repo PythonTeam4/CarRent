@@ -1,27 +1,27 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<input type="text" id="start-date" placeholder="Data początkowa">
-<input type="text" id="end-date" placeholder="Data końcowa">
-<button id="check-availability">Sprawdź dostępność</button>
-
-
+<div class="AvSearch">
+    <input class ="form-control is_valid" type="text" id="start-date" placeholder="Data początkowa">
+    <input class ="form-control is_valid" type="text" id="end-date" placeholder="Data końcowa">
+    <button id="check-avaibility" class="btn btn-primary btn-dark ">Sprawdź dostępność</button>
+</div>
 
 <script>
-$(function() {
-    $("#start-date").datepicker();
-    $("#end-date").datepicker();
-    $("#check-availability").click(function() {
-        var startDate = $("#start-date").datepicker("getDate");
-        var endDate = $("#end-date").datepicker("getDate");
-        if (startDate && endDate) {
-            var formattedStartDate = $.datepicker.formatDate("yy-mm-dd", startDate);
-            var formattedEndDate = $.datepicker.formatDate("yy-mm-dd", endDate);
-            window.location.href = "/available-cars/?start_date=" + formattedStartDate + "&end_date=" +
-                formattedEndDate;
-        }
+    $(function () {
+        $("#start-date").datepicker();
+        $("#end-date").datepicker();
+        $("#check-availability").click(function () {
+            var startDate = $("#start-date").datepicker("getDate");
+            var endDate = $("#end-date").datepicker("getDate");
+            if (startDate && endDate) {
+                var formattedStartDate = $.datepicker.formatDate("yy-mm-dd", startDate);
+                var formattedEndDate = $.datepicker.formatDate("yy-mm-dd", endDate);
+                window.location.href = "/available-cars/?start_date=" + formattedStartDate + "&end_date=" +
+                    formattedEndDate;
+            }
+        });
     });
-});
 </script>
 
 {% endblock %}

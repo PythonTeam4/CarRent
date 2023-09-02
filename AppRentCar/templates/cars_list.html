@@ -1,17 +1,20 @@
 {% extends "base.html" %}
-{% block content %}
-    <h1>Flota pojazdów</h1>
-    {% for car in object_list %}
-        <p><a href="{% url 'car_detail' car.id %}">
-            <b>{{ car.brand }} {{ car.model }}</b></a></p>
-        {% if car.avatar %}
-            <span class="avatar">
-                <img src="{% url 'images' car.avatar %}"
-                     height="150" width="250">
-            </span>
-        {% else %}
-            <p>Brak zdjęcia</p>
-        {% endif %}
-    {% endfor %}
 
-{% endblock %}`
+{% block content %}
+<h1>Flota pojazdów</h1>
+<div class="container-fluid">
+    <div class="row">
+        {% for car in object_list %}
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <img src="{% url 'images' car.avatar %}" height="150" width="250">
+                <div class="card-body">
+                    <a href="{% url 'car_detail' car.id %}">{{ car.brand }} {{ car.model }} <br>{{ car.year }}
+                        </br>
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+        {% endblock %}
