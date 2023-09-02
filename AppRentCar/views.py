@@ -6,14 +6,31 @@ from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, FormView, UpdateView, \
     DeleteView, CreateView, TemplateView
+from django_filters.views import FilterView
+
 
 from .forms import CarForm, RentForm, AvailabilityForm, UserProfileForm, DeleteCarForm, EditCarForm
 from .models import Car, Rent, RentalTerms, UserProfile
-from datetime import datetime
+from datetime import datetime, date, timedelta
+from .filters import CarFilter
 
 
-class HomeView(TemplateView):
-    template_name = 'home.html'
+class HomeView(FilterView):
+    model = Car
+    context_object_name = "cars_list"
+    template_name = "home.html"
+    filterset_class = CarFilter
+
+    def get_filterset_kwargs(self, *args, **kwargs):
+        filterset_kwargs = super().get_filterset_kwargs(*args, **kwargs)
+        data = self.request.GET.copy()
+        if 'start_date' not in data:
+            data['start_date'] = date.today().strftime('%Y-%m-%d')
+        if 'end_date' not in data:
+            data['end_date'] = (date.today() + timedelta(days=7)).strftime('%Y-%m-%d')
+        filterset_kwargs['data'] = data
+        return filterset_kwargs
+
 
 
 class CarListView(ListView):
@@ -27,7 +44,7 @@ class CarDetailView(DetailView):
 
 
 class CarCreateView(FormView):
-    template_name = 'cars_create.html'
+    template_name = 'form.html'
     form_class = CarForm
     success_url = reverse_lazy('cars')
 
@@ -49,14 +66,14 @@ class CarUpdateView(UpdateView):
 class CarDeleteView(DeleteView):
     template_name = 'confirm_delete.html'
     model = Car
-    success_url = reverse_lazy('')
+    success_url = reverse_lazy('home')
 
 
 class RentCreateView(LoginRequiredMixin, CreateView):
     model = Rent
     form_class = RentForm
     template_name = 'create_rent.html'
-    success_url = reverse_lazy('user_rentals')
+    success_url = reverse_lazy('home')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -86,7 +103,7 @@ class RentCreateView(LoginRequiredMixin, CreateView):
 
 
 class SubmittableLoginView(LoginView):
-    template_name = 'register/login.html'
+    template_name = 'form.html'
     next_page = reverse_lazy('home')
 
 
@@ -108,38 +125,6 @@ class UserRentalsView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         user = self.request.user
         return Rent.objects.filter(client=user)
-
-
-class AvailableCarsView(ListView):
-    model = Car
-    template_name = 'available_cars.html'
-    context_object_name = 'available_cars'
-    form_class = AvailabilityForm  # Twój formularz do wybierania daty
-
-    def get_queryset(self):
-        start_date = self.request.GET.get('start_date')
-        end_date = self.request.GET.get('end_date')
-
-        if start_date and end_date:
-            start_date = datetime.strptime(start_date, "%Y-%m-%d").date()
-            end_date = datetime.strptime(end_date, "%Y-%m-%d").date()
-
-            conflicting_rents = Rent.objects.filter(
-                Q(start_date__range=(start_date, end_date)) |
-                Q(end_date__range=(start_date, end_date)) |
-                Q(start_date__lte=start_date, end_date__gte=end_date)
-            )
-            reserved_cars = conflicting_rents.values_list('rental_terms__car', flat=True)
-            available_cars = Car.objects.exclude(id__in=reserved_cars)
-        else:
-            available_cars = Car.objects.all()
-
-        return available_cars
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['form'] = self.form_class(self.request.GET)
-        return context
 
 
 class UserProfileView(LoginRequiredMixin, DetailView):
@@ -197,6 +182,3 @@ class RentAdminView(ListView):
 
     def get_queryset(self):
         return Rent.objects.all()
-
-
-

@@ -1,29 +1,49 @@
 {% extends "base.html" %}
 
 {% block content %}
-<a href={% url 'create_rent' car.id %}>
-<button type="button">Rezerwuj</button>
-</a>
-
-<div class="car-details">
-    <h1>{{ car.brand }} {{ car.model }}</h1>
-    {% if car.avatar %}
-    <span class="avatar">
-                <img src="{% url 'images' car.avatar %}" height="150" width="200">
-            </span>
-    {% else %}
-    <p>Brak zdjęcia</p>
-    {% endif %}
-    <p>Typ: {{ car.cars_type }}</p>
-    <p>Typ silnika: {{ car.engine }}</p>
-    <p>Pojemność: {{ car.capacity }}</p>
-    <p>Rok: {{ car.year }}</p>
-    <p>Liczba miejsc siedzących: {{ car.number_of_seats }}</p>
-    <p>Spalanie: {{ car.consumption }}</p>
-    <p>Moc: {{ car.power }}</p>
-    <p>Przebieg: {{ car.car_mileage }}</p>
-    <p>Skrzynia biegów: {{ car.transmission }}</p>
-    <p>Liczba biegów: {{ car.no_gears }}</p>
-    <p>Napęd: {{ car.drive }}</p>
-</div>
+    <div class="car-details">
+        <h1 class="text-primary">{{ car.brand }} {{ car.model }}</h1>
+        <div class="container text-left">
+            <div class="row align-items-center">
+                <div class="col-5">
+                {% if car.avatar %}
+                    <span class="avatar">
+                        <img src="{% url 'images' car.avatar %}"  width="400">
+                    </span>
+                {% else %}
+                    <p>Brak zdjęcia</p>
+                {% endif %}
+                </div>
+                <div class="col">
+                    <div class="row p-2 mb-2 bg-primary text-white" style="font-size: 20px"><strong>DANE POJAZDU</strong></div>
+                    <div class="row p-1 mb-1 bg-body">
+                        <div class="col-3"><strong>Typ Nawozia:</strong><br> {{ car.cars_type }}</div>
+                        <div class="col-3"><strong>Rok Produkcji:</strong><br> {{ car.year }}</div>
+                        <div class="col-3"><strong>Liczba Miejsc:</strong><br> {{ car.number_of_seats }}</div>
+                    </div>
+                    <div class="row p-1 mb-1 bg-secondary bg-opacity-50 text-white">
+                        <div class="col-3"><strong>Typ Paliwa:</strong><br> {{ car.engine }}</div>
+                        <div class="col-3"><strong>Pojemność:</strong><br> {{ car.capacity }}</div>
+                        <div class="col-3"><strong>Moc Silnika:</strong><br> {{ car.power }}</div>
+                        <div class="col-3"><strong>Spalanie:</strong><br> {{ car.consumption }}</div>
+                    </div>
+                    <div class="row p-1 mb-1 bg-body"">
+                        <div class="col-3"><strong>Przebieg:</strong><br> {{ car.car_mileage }}</div>
+                        <div class="col-3"><strong>Skrzynia biegów:</strong><br> {{ car.transmission }}</div>
+                        <div class="col-3"><strong>Liczba biegów:</strong><br> {{ car.no_gears }}</div>
+                        <div class="col-3"><strong>Napęd:</strong><br>  {{ car.drive }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="col-12">
+        <a href={% url 'create_rent' car.id %}>
+            <button class="btn btn-primary" type="submit">Rezerwuj</button>
+        </a>
+        <a href={% url 'cars' %}>
+            <button class="btn btn-primary" type="submit">Wróć</button>
+        </a>
+    </div>
 {% endblock %}
