@@ -20,7 +20,7 @@ from django.urls import path, include
 from RentCar.views import FileDownloadView
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include("AppRentCar.urls")),
-    path('images/<path:path>', FileDownloadView.as_view(), name='images'),
+    path("admin/", admin.site.urls),
+    path("", include("AppRentCar.urls")),
+    path("images/<path:path>", FileDownloadView.as_view(), name="images"),
 ]
