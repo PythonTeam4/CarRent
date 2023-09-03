@@ -1,6 +1,39 @@
 {% extends "base.html" %}
-
+{% load static %}
 {% block content %}
+<div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="{% static 'macan_wall.jpg' %}" class="d-block w-100" alt="macan">
+                <div class="carousel-caption d-none d-md-block">
+                    <h1>Witaj na naszej stronie</h1>
+                    <p>Wybieraj spośród wielu naszych ekscytujących samochodó∑</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="{% static 'amg_wall.jpeg' %}" class="d-block w-100" alt="amg">
+                <div class="carousel-caption d-none d-md-block">
+                    <h1>Mercedes SL63 AMG</h1>
+                    <p>Nasz najszybszy samochód</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="{% static 'tesla_wall.jpeg' %}" class="d-block w-100" alt="tesla">
+                <div class="carousel-caption d-none d-md-block">
+                    <h1>Tesla 3</h1>
+                    <p>Postaw na ekologię! Wybierz samochód z napędem elektrycznym!</p>
+                </div>
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div><br>
 <div class="container">
     <div class="row">
         <div class="col-md-4">
