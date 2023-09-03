@@ -1,17 +1,16 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.views import LoginView, LogoutView
-from django.db.models import Q
+from django.http import HttpResponseForbidden
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, FormView, UpdateView, \
     DeleteView, CreateView, TemplateView
 from django_filters.views import FilterView
 
-
-from .forms import CarForm, RentForm, AvailabilityForm, UserProfileForm, DeleteCarForm, EditCarForm
+from .forms import CarForm, RentForm, UserProfileForm, DeleteCarForm, EditCarForm
 from .models import Car, Rent, RentalTerms, UserProfile
-from datetime import datetime, date, timedelta
+from datetime import date, timedelta
 from .filters import CarFilter
 
 
@@ -30,7 +29,6 @@ class HomeView(FilterView):
             data['end_date'] = (date.today() + timedelta(days=7)).strftime('%Y-%m-%d')
         filterset_kwargs['data'] = data
         return filterset_kwargs
-
 
 
 class CarListView(ListView):
@@ -52,6 +50,11 @@ class CarCreateView(FormView):
         form.save()
         return super().form_valid(form)
 
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_staff:
+            return HttpResponseForbidden("Brak dostępu. Tylko personel ma uprawnienia do dodawania samochodów.")
+        return super().dispatch(request, *args, **kwargs)
+
 
 class CarUpdateView(UpdateView):
     template_name = 'form.html'
@@ -62,11 +65,21 @@ class CarUpdateView(UpdateView):
         car_id = self.kwargs['pk']
         return reverse_lazy('car_detail', kwargs={'pk': car_id})
 
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_staff:
+            return HttpResponseForbidden("Brak dostępu. Tylko personel ma uprawnienia do edycji samochodów.")
+        return super().dispatch(request, *args, **kwargs)
+
 
 class CarDeleteView(DeleteView):
     template_name = 'confirm_delete.html'
     model = Car
     success_url = reverse_lazy('home')
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_staff:
+            return HttpResponseForbidden("Brak dostępu. Tylko personel ma uprawnienia do usuwania samochodów.")
+        return super().dispatch(request, *args, **kwargs)
 
 
 class RentCreateView(LoginRequiredMixin, CreateView):
@@ -84,7 +97,6 @@ class RentCreateView(LoginRequiredMixin, CreateView):
         form = self.get_form()
         form.fields['rental_terms'].queryset = RentalTerms.objects.filter(car_id=car_id)
         context['form'] = form
-
         return context
 
     def form_valid(self, form):
