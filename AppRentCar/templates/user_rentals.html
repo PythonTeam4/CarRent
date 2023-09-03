@@ -1,22 +1,32 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Moje rezerwacje</h1>
-<br></br>
-{% if rentals %}
-<ul>
-    {% for rental in rentals %}
-    <ul class="list-group">
-        <li class="list-group-item list-group-item-secondary"><h5>{{rental.rental_terms.car}}</h5>
-            <br>
-            <p>Od {{ rental.start_date }} do {{ rental.end_date }}</p>
-        </li>
-    </ul>
-    {% endfor %}
-</ul>
-{% else %}
-<p>Brak dostępnych rezerwacji.</p>
-{% endif %}
+    <h1 class="text-primary">Historia Rezerwacji</h1>
+    <br>
+    {% if rentals %}
+        <table class="table caption-top">
+            <caption>Oto lista Twoich rezerwacji.</caption>
+            <thread>
+                <tr class="table-dark">
+                    <th scope="col">Samochód</th>
+                    <th scope="col">Data od:</th>
+                    <th scope="col">Data do:</th>
+                    <th scope="col">Cena:</th
+                </tr>
+            </thread>
+            <tbody>
+                {% for rental in rentals %}
+                <tr>
+                    <td>{{ rental.rental_terms.car }}</td>
+                    <td>{{ rental.start_date.date }}</td>
+                    <td>{{ rental.end_date.date }}</td>
+                    <td>{{ rental.amount }} </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Brak dostępnych rezerwacji.</p>
+    {% endif %}
 
 {% endblock %}
-
