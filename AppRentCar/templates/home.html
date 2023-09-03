@@ -13,6 +13,7 @@
                 <div class="mb-3">
                     <label for="{{ filter.form.end_date.id_for_label }}" class="form-label"><strong>Data do:</strong></label>
                     {{ filter.form.end_date }}
+                    <div id="date_error" class="text-danger"></div>
                 </div>
                 <div class="mb-3">
                     <label for="{{ filter.form.engine.id_for_label }}" class="form-label"><strong>Silnik:</strong></label>
@@ -30,7 +31,7 @@
                     <label for="{{ filter.form.cars_type.id_for_label }}" class="form-label"><strong>Typ pojazdu:</strong></label>
                     {{ filter.form.cars_type }}
                 </div>
-                <button type="submit" class="btn btn-primary">Filtruj</button>
+                <button id="filter-button" type="submit" class="btn btn-primary">Filtruj</button>
             </form>
         </div>
         <div class="col-md-8">
@@ -61,4 +62,33 @@
         </div>
     </div>
 </div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var startDateField = document.getElementById("id_start_date");
+        var endDateField = document.getElementById("id_end_date");
+        var dateError = document.getElementById("date_error"); // Div dla wspólnego błędu
+
+        startDateField.addEventListener("change", validateDate);
+        endDateField.addEventListener("change", validateDate);
+
+        function validateDate() {
+            var startDate = new Date(startDateField.value);
+            var endDate = new Date(endDateField.value);
+            var today = new Date();
+            var todayFormatted = today.toISOString().split('T')[0];
+
+            today.setHours(0, 0, 0, 0);
+
+            if (startDate.getTime() < today.getTime()) {
+                dateError.innerText = "Nieprawidłowo ustawiona data";
+                startDateField.value = "";
+            } else if (endDate.getTime() < startDate.getTime()) {
+                dateError.innerText = "Nieprawidłowo ustawiona data";
+                endDateField.value = "";
+            } else {
+                dateError.innerText = "";
+            }
+        }
+    });
+</script>
 {% endblock %}
