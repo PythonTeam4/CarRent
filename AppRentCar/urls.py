@@ -33,11 +33,7 @@ urlpatterns = [
     path("profil/", UserProfileView.as_view(), name="user_profile"),
     path("profile/edit/", UserProfileEditView.as_view(), name="edit_profile"),
     path("admin_panel/", AdminOnlyView.as_view(), name="admin_panel"),
-    path(
-        "admin_panel/delete-car/",
-        DeleteCarFromList.as_view(),
-        name="delete_car_from_list",
-    ),
+    path("admin_panel/delete-car/",DeleteCarFromList.as_view(), name="delete_car_from_list"),
     path("admin_panel/edit-car/", EditCarFromList.as_view(), name="edit_car_from_list"),
     path("admin_panel/rent_admin/", RentAdminView.as_view(), name="rent_admin"),
 ]
