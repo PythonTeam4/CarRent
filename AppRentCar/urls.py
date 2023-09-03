@@ -3,7 +3,7 @@ from django.urls import path
 from .views import (CarListView, CarDetailView, CarCreateView, CarUpdateView, CarDeleteView, RentCreateView,
                     SubmittableLoginView, RegisterView, Logout, UserRentalsView, HomeView, AvailableCarsView,
                     UserProfileView, UserProfileEditView, AdminOnlyView, DeleteCarFromList, EditCarFromList,
-                    RentAdminView)
+                    RentAdminView, RentUpdateView, RentDeleteView)
 
 urlpatterns = [
     path('', HomeView.as_view(), name='home'),
@@ -17,6 +17,8 @@ urlpatterns = [
     path('sign_up/', RegisterView.as_view(), name='registration'),
     path('logout/', Logout.as_view(), name='logout'),
     path('my-rentals/', UserRentalsView.as_view(), name='user_rentals'),
+    path('rent/<int:pk>/update/', RentUpdateView.as_view(), name='rent_update'),
+    path('rent/<int:pk>/delete/', RentDeleteView.as_view(), name='rent_delete'),
     path('available-cars/', AvailableCarsView.as_view(), name='available_cars'),
     path('profil/', UserProfileView.as_view(), name='user_profile'),
     path('profile/edit/', UserProfileEditView.as_view(), name='edit_profile'),

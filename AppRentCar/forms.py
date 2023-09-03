@@ -62,3 +62,11 @@ class EditCarForm(forms.Form):
         label='Select Car to Edit',
         widget=forms.Select(attrs={'class': 'form-control'})
     )
+
+
+class EditRentForm(forms.Form):
+    rent_id = forms.ModelChoiceField(
+        queryset=Rent.objects.all(),
+        label='Select Car to Edit',
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )

@@ -85,6 +85,19 @@ class RentCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
+class RentUpdateView(UpdateView):
+    template_name = 'create_rent.html'
+    model = Rent
+    fields = '__all__'
+    success_url = reverse_lazy('user_rentals')
+
+
+class RentDeleteView(DeleteView):
+    template_name = 'confirm_delete.html'
+    model = Rent
+    success_url = reverse_lazy('user_rentals')
+
+
 class SubmittableLoginView(LoginView):
     template_name = 'form.html'
     next_page = reverse_lazy('home')
@@ -197,6 +210,3 @@ class RentAdminView(ListView):
 
     def get_queryset(self):
         return Rent.objects.all()
-
-
-
