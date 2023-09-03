@@ -36,9 +36,8 @@
         <h5 class="offcanvas-title text-light">Panel Użytkownika</h5>
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close" ></button>
     </div>
-    <div class="offcanvas-body">
         {% if user.is_staff %}
-        <a href="{% url 'admin_panel' %}">Zarządzanie</a>
+        <a href="{% url 'admin_panel' %}" class="d-block text-light">Zarządzanie</a>
         {% else %}
         {% endif %}
         {% if user.is_authenticated %}
