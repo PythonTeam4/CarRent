@@ -30,11 +30,11 @@ class RentForm(forms.ModelForm):
         model = Rent
         fields = ['rental_terms', 'start_date', 'end_date', 'take_from', 'take_back']
         widgets = {
-            'rental_terms': forms.Select(attrs={'class': 'form-control is_valid'}),
-            'start_date': forms.DateInput(attrs={'class': 'form-control is_valid'}),
-            'end_date': forms.DateInput(attrs={'class': 'form-control is_valid'}),
-            'take_from': forms.Select(attrs={'class': 'form-control is_valid'}),
-            'take_back': forms.Select(attrs={'class': 'form-control is_valid'}),
+            'rental_terms': forms.Select(attrs={'class': 'form-select'}),
+            'start_date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'end_date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'take_from': forms.Select(attrs={'class': 'form-select'}),
+            'take_back': forms.Select(attrs={'class': 'form-select'}),
         }
 
 

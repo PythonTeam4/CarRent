@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<div class="container">
     <h1 class="text-primary">Historia Rezerwacji</h1>
     <br>
     {% if rentals %}
@@ -28,5 +29,5 @@
     {% else %}
         <p>Brak dostępnych rezerwacji.</p>
     {% endif %}
-
+</div>
 {% endblock %}
